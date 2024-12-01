@@ -11,6 +11,10 @@ script_file = os.path.join(source, f"Day_{day_number}.py")
 input_file = os.path.join(inputs, f"day_{day_number}.txt")
 test_input_file = os.path.join(inputs, f"day_{day_number}_test.txt")
 
+if os.path.isfile(script_file):
+    print(f'Day {datetime.now().day} has already been setup')
+    exit()
+
 with open(os.path.join(source, f"Day_{day_number}.py"), 'w') as f:
     f.write("from utils import read_file\n\n"
             f"values = read_file({datetime.now().day}, str, True)\n\n")
