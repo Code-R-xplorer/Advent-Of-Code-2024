@@ -5,7 +5,7 @@ This repo is where you can find my attempts for this years Advent of Code!
 To find more information about Advent of Code 2024 go [here](https://adventofcode.com/2024/about):
 
 ## Results
-- [Day 01](): :black_large_square: :black_large_square:
+- [Day 01](src/Day_01.py): :star: :star:
 - [Day 02](): :black_large_square: :black_large_square:
 - [Day 03](): :black_large_square: :black_large_square:
 - [Day 04](): :black_large_square: :black_large_square:
