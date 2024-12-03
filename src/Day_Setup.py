@@ -2,7 +2,8 @@ from datetime import datetime
 import os
 from git import Repo
 
-root_dir = os.path.dirname(os.path.abspath(__file__))
+current = os.path.dirname(os.path.realpath(__file__))
+root_dir = os.path.dirname(current)
 source = os.path.join(root_dir, 'src')
 inputs = os.path.join(root_dir, 'Inputs')
 
