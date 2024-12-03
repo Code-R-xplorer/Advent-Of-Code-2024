@@ -3,37 +3,37 @@ import re
 
 values = read_file(3, str, False)
 
-# Regular expression to match valid mul(X,Y)
-pattern = r"mul\(\d{1,3},\d{1,3}\)"
 
-matches = []
+def get_matches(pattern):
+    hits = []
+    for line in values:
+        hits += re.findall(pattern, line)
+    return hits
 
-for line in values:
-    matches += re.findall(pattern, line)
 
-# Pattern to extract X and Y
-extract_pattern = r"mul\((\d{1,3}),(\d{1,3})\)"
+def get_total_results(hits):
+    # Pattern to extract X and Y
+    extract_pattern = r"mul\((\d{1,3}),(\d{1,3})\)"
 
-# Extract X and Y for each match
-results = [re.match(extract_pattern, match).groups() for match in matches]
+    # Extract X and Y for each match
+    results = [re.match(extract_pattern, hit).groups() for hit in hits]
 
-# Convert the tuples to integers (optional)
-results = [(int(x), int(y)) for x, y in results]
+    # Convert the tuples to integers (optional)
+    results = [(int(x), int(y)) for x, y in results]
 
-total_results = 0
+    total_results = 0
 
-for x, y in results:
-    total_results += (x * y)
+    for x, y in results:
+        total_results += (x * y)
+    return total_results
 
-print(f'Part 1: {total_results}')
+
+matches = get_matches(r"mul\(\d{1,3},\d{1,3}\)")
+
+print(f'Part 1: {get_total_results(matches)}')
 # Part 1: 173419328
 
-pattern = r"mul\(\d{1,3},\d{1,3}\)|do\(\)|don\'t\(\)"
-
-matches = []
-
-for line in values:
-    matches += re.findall(pattern, line)
+matches = get_matches(r"mul\(\d{1,3},\d{1,3}\)|do\(\)|don\'t\(\)")
 
 instructions = []
 do_instruction = True
@@ -48,15 +48,5 @@ for i in range(len(matches)):
     if do_instruction:
         instructions.append(matches[i])
 
-# Extract X and Y for each match
-results = [re.match(extract_pattern, match).groups() for match in instructions]
-
-# Convert the tuples to integers (optional)
-results = [(int(x), int(y)) for x, y in results]
-
-total_results = 0
-
-for x, y in results:
-    total_results += (x * y)
-
-print(f'Part 2: {total_results}')
+print(f'Part 2: {get_total_results(instructions)}')
+# Part 2: 90669332
