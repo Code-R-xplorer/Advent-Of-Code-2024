@@ -1,7 +1,9 @@
 import os
 
-root_dir = os.path.dirname(os.path.abspath(__file__))
-inputs = os.path.join(root_dir, 'Inputs')
+current = os.path.dirname(os.path.realpath(__file__))
+root_dir = os.path.dirname(current)
+
+inputs = os.path.join('../', root_dir, 'Inputs')
 
 
 def read_file(day: int, transform=str, use_test=False, strip_line=True) -> list:
