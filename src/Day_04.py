@@ -41,33 +41,40 @@ print(f'Part 1: {count}')
 
 
 def check_in_bounds(grid, x, y):
-    grid_width = len(grid)
-    grid_height = len(grid[0])
-    return 0 <= x < grid_width and 0 <= y < grid_height
+    return 0 <= x < len(grid) and 0 <= y < len(grid[0])
 
 
 def find_x_shape(grid, x, y):
     if grid[x][y] != "A":
         return False
-    tl = (x - 1, y - 1)  # Top-left
-    tr = (x + 1, y - 1)  # Top-right
-    bl = (x - 1, y + 1)  # Bottom-left
-    br = (x + 1, y + 1)  # Bottom-right
 
-    if (not check_in_bounds(grid, tl[0], tl[1]) or
-            not check_in_bounds(grid, tr[0], tr[1]) or
-            not check_in_bounds(grid, bl[0], bl[1]) or
-            not check_in_bounds(grid, br[0], br[1])):
-        return False
+    # Define the positions of the corners relative to the center (x, y)
+    corners = {
+        'tl': (x - 1, y - 1),  # Top-left
+        'tr': (x + 1, y - 1),  # Top-right
+        'bl': (x - 1, y + 1),  # Bottom-left
+        'br': (x + 1, y + 1)   # Bottom-right
+    }
 
-    return ((grid[tl[0]][tl[1]] == "M" and grid[tr[0]][tr[1]] == "S" and
-            grid[bl[0]][bl[1]] == "M" and grid[br[0]][br[1]] == "S")
-            or (grid[tl[0]][tl[1]] == "S" and grid[tr[0]][tr[1]] == "M" and
-            grid[bl[0]][bl[1]] == "S" and grid[br[0]][br[1]] == "M")
-            or (grid[tl[0]][tl[1]] == "M" and grid[tr[0]][tr[1]] == "M" and
-            grid[bl[0]][bl[1]] == "S" and grid[br[0]][br[1]] == "S")
-            or (grid[tl[0]][tl[1]] == "S" and grid[tr[0]][tr[1]] == "S" and
-            grid[bl[0]][bl[1]] == "M" and grid[br[0]][br[1]] == "M"))
+    # Check if all corner positions are within bounds
+    for pos in corners.values():
+        if not check_in_bounds(grid, pos[0], pos[1]):
+            return False
+
+    # Patterns to match
+    patterns = [
+        ('M', 'S', 'M', 'S'),
+        ('S', 'M', 'S', 'M'),
+        ('M', 'M', 'S', 'S'),
+        ('S', 'S', 'M', 'M')
+    ]
+
+    tl, tr, bl, br = corners['tl'], corners['tr'], corners['bl'], corners['br']
+    for pattern in patterns:
+        if (grid[tl[0]][tl[1]], grid[tr[0]][tr[1]], grid[bl[0]][bl[1]], grid[br[0]][br[1]]) == pattern:
+            return True
+
+    return False
 
 
 count = 0
