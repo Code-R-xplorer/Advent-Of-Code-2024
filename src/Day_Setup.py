@@ -34,4 +34,3 @@ day_branch.checkout()
 
 repo.index.add([script_file, input_file, test_input_file])
 repo.index.commit(f"Day {datetime.now().day} Setup")
-origin.push(f"day_{day_number}")
