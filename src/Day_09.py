@@ -1,10 +1,8 @@
 from utils import read_file
 
-values = read_file(9, str, True)
-
+values = read_file(9, str, False)
 
 values = list(map(int, list(values[0])))
-
 
 drive = []
 
@@ -50,39 +48,60 @@ def calculate_checksum(array):
     return checksum
 
 
-# print(f'Part 1: {calculate_checksum(move_right_values_to_left(drive))}')
+print(f'Part 1: {calculate_checksum(move_right_values_to_left(drive.copy()))}')
+
+
 # Part 1: 6399153661894
 
-new_array = drive.copy()
-current_id = 9
-start_write_index = 0
-read_index = len(new_array) - 1
+def move_whole_files(disk):
+    # Parse the input into a list of tuples (file_id, start_index, size)
+    files = []
+    i = 0
 
-while current_id != 0:
-    if new_array[start_write_index] is not None:
-        start_write_index += 1
-    else:
-        file_length = 0
-        for i in range(read_index, 0, -1):
-            if new_array[i] is current_id:
-                file_length += 1
+    while i < len(disk):
+        if isinstance(disk[i], int):  # If it is part of a file
+            file_id = disk[i]
+            start_index = i
+            size = 0
+
+            # Count the size of the current file
+            while i < len(disk) and disk[i] == file_id:
+                size += 1
+                i += 1
+
+            files.append((file_id, start_index, size))
+        else:
+            i += 1
+
+    # Sort files by file ID in descending order
+    files.sort(key=lambda x: x[0], reverse=True)
+
+    # Process files and move them if possible
+    for file_id, start_index, size in files:
+        # Find leftmost span of free space large enough to fit the file
+        free_space_start = None
+        free_space_size = 0
+
+        for j in range(len(disk)):
+            if disk[j] is None:
+                if free_space_start is None:
+                    free_space_start = j
+                free_space_size += 1
             else:
-                break
-        can_fit_file = True
-        for i in range(start_write_index, start_write_index + file_length, 1):
-            if new_array[i] is not None:
-                can_fit_file = False
-                current_id -= 1
-                break
+                if free_space_size >= size:
+                    break
+                free_space_start = None
+                free_space_size = 0
 
-        if can_fit_file:
-            for i in range(read_index, read_index - file_length, -1):
-                new_array[start_write_index] = new_array[i]
-                new_array[i] = None
-                start_write_index += 1
-                read_index -= 1
-            start_write_index = 0
-            current_id -= 1
+        # Check if a suitable span of free space exists
+        if free_space_start is not None and free_space_size >= size and free_space_start < start_index:
+            # Move the file to the free space
+            for k in range(size):
+                disk[free_space_start + k] = file_id
+                disk[start_index + k] = None
 
-print(drive)
-print(new_array)
+    return disk
+
+
+print(f'Part 2: {calculate_checksum(move_whole_files(drive.copy()))}')
+# Part 2: 6421724645083
