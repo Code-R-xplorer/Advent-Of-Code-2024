@@ -13,7 +13,7 @@ To find more information about Advent of Code 2024 go [here](https://adventofcod
 - [Day 06](src/Day_06.py): :star: :star:
 - [Day 07](src/Day_07.py): :star: :star:
 - [Day 08](): :black_large_square: :black_large_square:
-- [Day 09](src/Day_09.py): :star: :black_large_square:
+- [Day 09](src/Day_09.py): :star: :star:
 - [Day 10](): :black_large_square: :black_large_square:
 - [Day 11](): :black_large_square: :black_large_square:
 - [Day 12](): :black_large_square: :black_large_square:
