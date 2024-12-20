@@ -1,12 +1,15 @@
 from utils import read_file
 from collections import namedtuple, deque
 
+
 def transform(line):
     return list(line)
 
-values = read_file(12, transform, False)
+
+values = read_file(12, transform, True)
 
 Position = namedtuple("Position", ["x", "y"])
+
 
 def create_grid(inputs):
     grid = {}
@@ -17,6 +20,7 @@ def create_grid(inputs):
             visited[Position(x, y)] = False
     return grid, visited, len(inputs)
 
+
 def get_neighbours(position):
     return [
         Position(position.x + 1, position.y),
@@ -24,6 +28,7 @@ def get_neighbours(position):
         Position(position.x, position.y + 1),
         Position(position.x, position.y - 1)
     ]
+
 
 def bfs(start_position, grid, visited, grid_length):
     plant_type = grid[start_position]
@@ -51,6 +56,7 @@ def bfs(start_position, grid, visited, grid_length):
 
     return area, perimeter
 
+
 def get_regions(grid, visited, grid_length):
     regions = []
     # Iterate through the grid
@@ -63,10 +69,12 @@ def get_regions(grid, visited, grid_length):
 
     return regions
 
-def part_1(values):
-	grid, visited, grid_length = create_grid(values)
-	regions = get_regions(grid, visited, grid_length)
-	total_price = sum(area * perimeter for _, area, perimeter in regions)
-	print(f'Part 1: {total_price}')
 
-part_1(values) # Part 1: 1457298
+def part_1(inputs):
+    grid, visited, grid_length = create_grid(inputs)
+    regions = get_regions(grid, visited, grid_length)
+    total_price = sum(area * perimeter for _, area, perimeter in regions)
+    print(f'Part 1: {total_price}')
+
+
+part_1(values)  # Part 1: 1457298
