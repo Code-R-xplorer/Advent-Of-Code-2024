@@ -1,5 +1,4 @@
 from itertools import groupby
-
 from utils import read_file
 
 values = read_file(13, str, False)
@@ -33,7 +32,7 @@ def find_min_cost(prizes):
     return len(results), sum(results)
 
 
-def get_prizes(inputs):
+def get_prizes(inputs, unit_conversion=False):
     results = []
 
     # Group elements based on whether they are not the split value
@@ -54,6 +53,9 @@ def get_prizes(inputs):
         b_y = int(result[1].split(": ")[1].split(", ")[1].split("+")[1])
         prize_x = int(result[2].split(": ")[1].split(", ")[0].split("=")[1])
         prize_y = int(result[2].split(": ")[1].split(", ")[1].split("=")[1])
+        if unit_conversion:
+            prize_x += 10000000000000
+            prize_y += 10000000000000
         prizes.append({'x': (a_x, b_x, prize_x), 'y': (a_y, b_y, prize_y)})
 
     return prizes
@@ -62,4 +64,27 @@ def get_prizes(inputs):
 num_prizes, total_cost = find_min_cost(get_prizes(values))
 print(f"Number of prizes won: {num_prizes}")
 print(f"Minimum tokens spent: {total_cost}")
+
+
 # Part 1: 26599
+
+def find_min_cost_2(prizes):
+    results = []
+
+    for prize in prizes:
+        a_x, b_x, x_target = prize['x']
+        a_y, b_y, y_target = prize['y']
+        a_presses = (a_x * y_target - a_y * x_target) / (
+                a_x * b_y - a_y * b_x
+        )
+        b_presses = (x_target - a_presses * b_x) / a_x
+        if int(a_presses) == a_presses and int(b_presses) == b_presses:
+            results.append(int(a_presses) + 3 * int(b_presses))
+
+    return len(results), sum(results)
+
+
+num_prizes, total_cost = find_min_cost_2(get_prizes(values, True))
+print(f"Number of prizes won: {num_prizes}")
+print(f"Minimum tokens spent: {total_cost}")
+# Part 2: 106228669504887
