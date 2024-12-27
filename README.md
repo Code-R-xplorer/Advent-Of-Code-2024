@@ -30,3 +30,8 @@ To find more information about Advent of Code 2024 go [here](https://adventofcod
 - [Day 23](): :black_large_square: :black_large_square:
 - [Day 24](): :black_large_square: :black_large_square:
 - [Day 25](): :black_large_square: :black_large_square:
+
+## Final Thoughts
+Another year of Advent of Code done. This year I managed to beat my personal star record of 21 stars with a new record 
+of 25 stars! Unfortunately life got in the way again this year so I couldn't complete more days. I enjoyed this year 
+and look forward to next year!
