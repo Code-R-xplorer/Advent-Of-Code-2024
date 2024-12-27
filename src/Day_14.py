@@ -1,10 +1,20 @@
 import math
+from typing import List
 
 from utils import read_file
-from collections import namedtuple
+from collections import namedtuple, Counter
 
 Vector = namedtuple('Vector', ['x', 'y'])
-Robot = namedtuple('Robot', ['Position', 'Velocity'])
+
+
+class Robot:
+    position = Vector(0, 0)
+    velocity = Vector(0, 0)
+
+    def __init__(self, position, velocity):
+        self.position = position
+        self.velocity = velocity
+
 
 values = read_file(14, str, False)
 
@@ -23,8 +33,8 @@ def get_final_robots_in_quads(robots, width, height):
     quadrants = [0] * 4
 
     for robot in robots:
-        start_position = robot.Position
-        velocity = robot.Velocity
+        start_position = robot.position
+        velocity = robot.velocity
         final_position = Vector(
             (start_position.x + (velocity.x * 100)) % width,
             (start_position.y + (velocity.y * 100)) % height,
@@ -44,5 +54,39 @@ def get_final_robots_in_quads(robots, width, height):
     return quadrants
 
 
-print(f'Part 1: {math.prod(get_final_robots_in_quads(get_robots(values), 101, 103))}')
+# print(f'Part 1: {math.prod(get_final_robots_in_quads(get_robots(values), 101, 103))}')
 # Part 1: 229069152
+
+
+def print_grid(positions: List[Vector], width: int, height: int) -> None:
+    with open("output.txt", "a") as output:
+        c = Counter(positions)
+        for y in range(height):
+            for x in range(width):
+                if cell := c.get((x, y)):
+                    print(cell, end="", file=output)
+                else:
+                    print(".", end="", file=output)
+            print(file=output)
+        output.close()
+
+
+def simulate_robots_movement(robots, width, height, seconds):
+    robots = robots.copy()
+    for second in range(seconds):
+        with open("output.txt", "a") as output:
+            print(f"========== Seconds {second} ===========", file=output)
+            output.close()
+        for robot in robots:
+            start_position = robot.position
+            velocity = robot.velocity
+            next_position = Vector(
+                (start_position.x + velocity.x) % width,
+                (start_position.y + velocity.y) % height,
+            )
+            robot.position = next_position
+        print_grid([r.position for r in robots], width, height)
+
+
+simulate_robots_movement(get_robots(values), 101, 103, 10001)
+# Part 2: 7383
